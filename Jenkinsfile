@@ -11,6 +11,7 @@ pipeline {
             steps {
                 script {
                     sh 'sudo docker run --rm --name builder -v "$PWD":/app -v "$HOME/.m2/repository":/root/.m2/repository -w /app amazoncorretto:17.0.10 ./gradlew clean build'
+                    sh 'ls -al'
                 }
             }
         }
