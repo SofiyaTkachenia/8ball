@@ -12,7 +12,7 @@ pipeline {
         VERSION = '0.0.1'
         JAR_PATH = "build/libs/${PROJECT_NAME}-${VERSION}.jar"
         ARTIFACTORY_REPO = "${PROJECT_NAME}/"
-    }q
+    }
 
     stages {
         stage('Docker build') {
