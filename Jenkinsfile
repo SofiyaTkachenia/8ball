@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'amazoncorretto:17.0.10'
+        BUILDER_DOCKER_IMAGE = 'amazoncorretto:17.0.10'
         PROJECT_NAME = '8ball'
         VERSION = '0.0.1'
         JAR_PATH = "build/libs/${PROJECT_NAME}-${VERSION}.jar"
@@ -15,11 +15,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/SofiyaTkachenia/8ball'
-            }
-        }
         stage('Docker build') {
             steps {
                 script {
