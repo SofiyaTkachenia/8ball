@@ -12,7 +12,7 @@ pipeline {
         VERSION = '0.0.1'
         JAR_PATH = "build/libs/${PROJECT_NAME}-${VERSION}.jar"
         ARTIFACTORY_REPO = "${PROJECT_NAME}/"
-    }
+    }q
 
     stages {
         stage('Docker build') {
@@ -25,6 +25,11 @@ pipeline {
         stage('Push to the JFrog artifactory') {
             steps {
                 jf "rt u ${JAR_PATH} ${ARTIFACTORY_REPO}"
+            }
+        }
+        stage('Push to the JFrog artifactory') {
+            steps {
+                echo $HOME
             }
         }
     }
