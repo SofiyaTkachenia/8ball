@@ -18,6 +18,7 @@ pipeline {
         stage('Docker build') {
             steps {
                 script {
+                    sh 'ls -al && cd src/main/java/org/example'
                     sh 'sudo docker run --rm --name builder -v "$PWD":/app -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew clean build'
                 }
             }
