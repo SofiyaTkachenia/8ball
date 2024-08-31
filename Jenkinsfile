@@ -24,10 +24,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                        sudo docker run --rm --name builder \
-                        -v "$PWD":/app \
-                        -w /app \
-                        ${DOCKER_IMAGE} ./gradlew clean build
+                        sudo docker run --rm --name builder -v "$PWD":/app -w /app amazoncorretto:17.0.10 ./gradlew clean build
                     """
                 }
             }
