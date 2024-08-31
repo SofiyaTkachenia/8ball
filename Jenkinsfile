@@ -15,6 +15,13 @@ pipeline {
     }
 
     stages {
+        stage('Check folder') {
+            steps {
+                script {
+                    sh "ls -al ${HOME}/jenkins/.m2/"
+                }
+            }
+        }
         stage('Docker build') {
             steps {
                 script {
