@@ -27,10 +27,5 @@ pipeline {
                 jf "rt u ${JAR_PATH} ${ARTIFACTORY_REPO}"
             }
         }
-        stage('Push to the JFrog artifactory') {
-            steps {
-                echo $HOME
-            }
-        }
     }
 }
