@@ -7,10 +7,10 @@ pipeline {
                 git branch: 'main', url: 'git@github.com:SofiyaTkachenia/8ball.git'
             }
         }
-        stage('Docker PS') {
+        stage('Docker version') {
             steps {
                 script {
-                    sh 'docker ps'
+                    sh 'docker --version'
                 }
             }
         }
