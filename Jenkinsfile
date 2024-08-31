@@ -10,7 +10,7 @@ pipeline {
         stage('Docker version') {
             steps {
                 script {
-                    sh 'pwd'
+                    sh 'pwd && ls -al'
                 }
             }
         }
