@@ -24,6 +24,8 @@ pipeline {
                 jf '-v'
                 jf 'c show'
                 jf 'rt ping'
+                jf 'rt u build/libs/8ball-0.0.1.jar 8ball/'
+                jf 'rt bp'
             }
         }
     }
