@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'git@github.com:SofiyaTkachenia/8ball.git'
+                git branch: 'main', url: 'https://github.com/SofiyaTkachenia/8ball'
             }
         }
         stage('Docker version') {
