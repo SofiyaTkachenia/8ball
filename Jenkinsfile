@@ -23,7 +23,9 @@ pipeline {
         stage('Docker build') {
             steps {
                 script {
-                    sh 'sudo docker run --rm --name builder -v "$PWD":/app -w /app amazoncorretto:17.0.10 ./gradlew clean build'
+                    sh """
+                    sudo docker run --rm --name builder -v "$PWD":/app -w /app amazoncorretto:17.0.10 ./gradlew clean build
+                    """
                 }
             }
         }
