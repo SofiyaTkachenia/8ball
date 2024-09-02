@@ -22,12 +22,6 @@ pipeline {
             }
         }
         stage('Docker build') {
-            when {
-                anyOf {
-                    expression { env.BRANCH_NAME.startsWith('refs/tags/') }
-                    expression { env.BRANCH_NAME.startsWith('refs/heads/') }
-                }
-            }
             steps {
                 script {
                     sh """
