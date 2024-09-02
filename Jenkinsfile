@@ -42,7 +42,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "jf rt upload ${JAR_PATH} ${ARTIFACTORY_REPO}/${env.BRANCH_NAME.replace('refs/tags/', '')}/"
+                    sh "jf rt upload ${JAR_PATH} ${ARTIFACTORY_REPO}-${env.BRANCH_NAME}/"
                 }
             }
         }
