@@ -17,6 +17,5 @@ class BallShakerTest {
         var possibleAnswers = EnumSet.allOf(Answer.class);
         var ballAnswer = ballShaker.shakeTheBall();
         assertTrue(possibleAnswers.contains(ballAnswer));
-        System.out.println("Test01 successfully finished ");
     }
 }
