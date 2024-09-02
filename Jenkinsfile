@@ -31,6 +31,7 @@ pipeline {
             }
             steps {
                 script {
+                    sh 'jf --version'
                     sh 'sudo docker run --rm --name builder -v "$PWD":/app -v "/home/ubuntu/jenkins/.m2/Users/sofiatkachenia/.m2/repository":/root/.m2/repository -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew test'
                 }
             }
@@ -42,7 +43,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "jf rt upload ${JAR_PATH} ${ARTIFACTORY_REPO}-${env.BRANCH_NAME}"
+                    sh "jf rt upload ${JAR_PATH} ${ARTIFACTORY_REPO}/${env.BRANCH_NAME.replace('refs/tags/', '')}/"
                 }
             }
         }
