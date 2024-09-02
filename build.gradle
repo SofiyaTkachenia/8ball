@@ -10,7 +10,7 @@ java {
 }
 
 repositories {
-    maven { url "file://${HOME}/jenkins/.m2/repository" }
+    maven { url "file://home/ubuntu/jenkins/.m2/Users/sofiatkachenia/.m2/repository" }
 }
 
 dependencies {
