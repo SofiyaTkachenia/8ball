@@ -18,6 +18,7 @@ pipeline {
             steps {
                 script {
                     def gradleCommand = env.BRANCH_NAME.startsWith('refs/tags/') ? 'clean build' : 'test'
+                    sh 'echo ${gradleCommand}'
                     sh 'sudo docker run --rm --name builder -v "$PWD":/app -v "/home/ubuntu/jenkins/.m2/Users/sofiatkachenia/.m2/repository":/root/.m2/repository -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew ${gradleCommand}'
                 }
             }
