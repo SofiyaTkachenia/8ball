@@ -14,12 +14,28 @@ pipeline {
     }
 
     stages {
-        stage('Docker build') {
+        stage('Docker build for tag') {
+            when {
+                expression { env.BRANCH_NAME.startsWith('refs/tags/') }
+            }
             steps {
                 script {
                     def gradleCommand = env.BRANCH_NAME.startsWith('refs/tags/') ? 'clean build' : 'test'
                     sh 'echo ${gradleCommand}'
-                    sh 'sudo docker run --rm --name builder -v "$PWD":/app -v "/home/ubuntu/jenkins/.m2/Users/sofiatkachenia/.m2/repository":/root/.m2/repository -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew ${gradleCommand}'
+                    sh 'sudo docker run --rm --name builder -v "$PWD":/app -v "/home/ubuntu/jenkins/.m2/Users/sofiatkachenia/.m2/repository":/root/.m2/repository -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew test'
+                }
+            }
+        }
+
+        stage('Docker build for branch') {
+            when {
+                expression { !env.BRANCH_NAME.startsWith('refs/tags/') }
+            }
+            steps {
+                script {
+                    def gradleCommand = env.BRANCH_NAME.startsWith('refs/tags/') ? 'clean build' : 'test'
+                    sh 'echo ${gradleCommand}'
+                    sh 'sudo docker run --rm --name builder -v "$PWD":/app -v "/home/ubuntu/jenkins/.m2/Users/sofiatkachenia/.m2/repository":/root/.m2/repository -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew clean build'
                 }
             }
         }
