@@ -18,7 +18,7 @@ pipeline {
         stage('Check folder') {
             steps {
                 script {
-                    sh "ls -al ${HOME}/jenkins/.m2/Users"
+                    sh "ls -al ${HOME}/jenkins/.m2/Users/sofiatkachenia"
                 }
             }
         }
