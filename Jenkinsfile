@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                        docker run --rm --name builder \
+                        sudo docker run --rm --name builder \
                         -v "$PWD":/app \
                         -v "$HOME/.m2/repository":/root/.m2/repository \
                         -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew ${env.BRANCH_NAME.startsWith('refs/tags/') ? 'clean build' : 'test'}
