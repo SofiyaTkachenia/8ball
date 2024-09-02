@@ -16,7 +16,7 @@ pipeline {
     stages {
         stage('Docker build for tag') {
             when {
-                expression { env.BRANCH_NAME.startsWith('refs/tags/') }
+                expression { env.BRANCH_NAME.startsWith('0') }
             }
             steps {
                 script {
@@ -27,7 +27,7 @@ pipeline {
 
         stage('Docker build for branch') {
             when {
-                expression { !env.BRANCH_NAME.startsWith('refs/tags/') }
+                expression { !env.BRANCH_NAME.startsWith('0') }
             }
             steps {
                 script {
@@ -38,7 +38,7 @@ pipeline {
 
         stage('Push to the JFrog artifactory') {
             when {
-                expression { env.BRANCH_NAME.startsWith('refs/tags/') }
+                expression { env.BRANCH_NAME.startsWith('0') }
             }
             steps {
                 script {
