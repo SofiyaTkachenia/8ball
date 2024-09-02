@@ -10,7 +10,7 @@ pipeline {
         BUILDER_DOCKER_IMAGE = 'amazoncorretto:17.0.10'
         PROJECT_NAME = '8ball'
         JAR_PATH = "build/libs/${PROJECT_NAME}.jar"
-        ARTIFACTORY_REPO = "${PROJECT_NAME}/"
+        ARTIFACTORY_REPO = "${PROJECT_NAME}"
     }
 
     stages {
@@ -42,7 +42,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "jf rt upload ${JAR_PATH} ${ARTIFACTORY_REPO}-${env.BRANCH_NAME}/"
+                    sh "jf rt upload ${JAR_PATH} ${ARTIFACTORY_REPO}-${env.BRANCH_NAME}"
                 }
             }
         }
