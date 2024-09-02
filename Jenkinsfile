@@ -18,7 +18,7 @@ pipeline {
         stage('Check folder') {
             steps {
                 script {
-                    sh "sudo ls -al /root/jenkins/.m2/"
+                    sh "ls -al ${HOME}/jenkins/.m2/"
                 }
             }
         }
