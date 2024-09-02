@@ -14,6 +14,13 @@ pipeline {
     }
 
     stages {
+        stage('Print branch or tag name') {
+            steps {
+                script {
+                    echo "Current branch or tag: ${env.BRANCH_NAME}"
+                }
+            }
+        }
         stage('Docker build') {
             when {
                 anyOf {
