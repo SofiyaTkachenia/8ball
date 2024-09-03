@@ -32,7 +32,7 @@ pipeline {
 
         stage('Run unit tests') {
             when {
-                expression { !buildingTag() }
+                branch 'master'
             }
             steps {
                 script {
