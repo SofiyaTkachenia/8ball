@@ -36,6 +36,7 @@ pipeline {
             }
             steps {
                 script {
+                    sh 'ls -al /home/ubuntu/jenkins/.m2'
                     sh "${COMMAND} ${TEST_COMMAND}"
                 }
             }
