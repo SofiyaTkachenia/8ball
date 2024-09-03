@@ -11,35 +11,39 @@ pipeline {
         PROJECT_NAME = '8ball'
         JAR_PATH = "build/libs/${PROJECT_NAME}.jar"
         ARTIFACTORY_REPO = "${PROJECT_NAME}"
+        M2_LOCAL_PATH = "/home/ubuntu/jenkins/.m2/Users/sofiatkachenia/.m2/repository"
+        M2_CONTAINER_PATH = "/root/.m2/repository"
+        BUILD_COMMAND = "./gradlew clean build"
+        TEST_COMMAND = "./gradlew test"
+        COMMAND = "sudo docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -w /app ${BUILDER_DOCKER_IMAGE}"
     }
 
     stages {
-        stage('Docker build for tag') {
+        stage('Dockerized build') {
             when {
-                expression { env.BRANCH_NAME.startsWith('0') }
+                buildingTag()
             }
             steps {
                 script {
-                    sh 'sudo docker run --rm --name builder -v "$PWD":/app -v "/home/ubuntu/jenkins/.m2/Users/sofiatkachenia/.m2/repository":/root/.m2/repository -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew clean build'
-                    sh 'ls -al build/libs'
+                    sh "${COMMAND} ${BUILD_COMMAND}"
                 }
             }
         }
 
-        stage('Docker build for branch') {
+        stage('Run unit tests') {
             when {
-                expression { !env.BRANCH_NAME.startsWith('0') }
+                expression { !buildingTag() }
             }
             steps {
                 script {
-                    sh 'sudo docker run --rm --name builder -v "$PWD":/app -v "/home/ubuntu/jenkins/.m2/Users/sofiatkachenia/.m2/repository":/root/.m2/repository -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew test'
+                    sh "${COMMAND} ${TEST_COMMAND}"
                 }
             }
         }
 
         stage('Push to the JFrog artifactory') {
             when {
-                expression { env.BRANCH_NAME.startsWith('0') }
+                buildingTag()
             }
             steps {
                 script {
