@@ -11,7 +11,7 @@ pipeline {
         PROJECT_NAME = '8ball'
         JAR_PATH = "build/libs/${PROJECT_NAME}.jar"
         ARTIFACTORY_REPO = "${PROJECT_NAME}"
-        M2_LOCAL_PATH = "/home/ubuntu/jenkins/.m2/Users/sofiatkachenia/.m2/repository"
+        M2_LOCAL_PATH = "/home/ubuntu/jenkins/.m2"
         M2_CONTAINER_PATH = "/root/.m2/repository"
         BUILD_COMMAND = "./gradlew clean build"
         TEST_COMMAND = "./gradlew test"
