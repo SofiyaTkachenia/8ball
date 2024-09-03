@@ -32,7 +32,7 @@ pipeline {
 
         stage('Run unit tests') {
             when {
-                branch 'master'
+                branch 'main'
             }
             steps {
                 script {
