@@ -36,7 +36,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'ls -al /root/.m2/repository'
+                    sh 'sudo ls -al /root/.m2/repository'
                     sh 'echo $whoami'
                     sh "${COMMAND} ${TEST_COMMAND}"
                 }
