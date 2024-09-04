@@ -36,9 +36,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'sudo -u jenkins'
-                    sh 'whoami'
-                    sh "sudo ${COMMAND} ${TEST_COMMAND}"
+                    sh "sudo -u jenkins ${COMMAND} ${TEST_COMMAND}"
                 }
             }
         }
