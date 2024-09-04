@@ -36,7 +36,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "sudo -u jenkins ${COMMAND} ${TEST_COMMAND}"
+                    sh "${COMMAND} ${TEST_COMMAND}"
                 }
             }
         }
