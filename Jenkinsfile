@@ -36,7 +36,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'sudo ls -al /root/.m2/repository'
+                    sh 'sudo ls -al /home/jenkins/.m2'
                     sh 'echo $whoami'
                     sh "${COMMAND} ${TEST_COMMAND}"
                 }
