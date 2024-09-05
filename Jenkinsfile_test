@@ -6,7 +6,7 @@ pipeline {
         stage('Test aws s3 ls') {
             steps {
                 script {
-                    sh "sudo aws --version"
+                    sh "sudo aws s3 ls"
                 }
             }
         }
