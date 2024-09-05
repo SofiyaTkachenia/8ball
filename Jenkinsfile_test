@@ -3,6 +3,13 @@ pipeline {
     agent { label 'worker' }
 
     stages {
+       stage('Print Node Name') {
+            steps {
+                 script {
+                      echo "Running on node: ${env.NODE_NAME}"
+                 }
+            }
+        }
         stage('Assume Role') {
             steps {
                 script {
