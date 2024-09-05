@@ -1,0 +1,14 @@
+pipeline {
+
+    agent { label 'worker' }
+
+    stages {
+        stage('Test aws s3 ls') {
+            steps {
+                script {
+                    sh "aws --version"
+                }
+            }
+        }
+    }
+}
