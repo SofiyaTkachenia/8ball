@@ -3,10 +3,20 @@ pipeline {
     agent { label 'worker' }
 
     stages {
-        stage('Test aws s3 ls') {
+        stage('Assume Role') {
             steps {
                 script {
-                    sh "sudo aws sts get-caller-identity"
+                    def roleOutput = sh(script: 'aws sts assume-role --role-arn "arn:aws:iam::175222917203:role/AmazonSSMManagedInstanceRole" --role-session-name "jenkins-session"', returnStdout: true).trim()
+
+                    def assumeRole = readJSON(text: roleOutput)
+
+                    withEnv([
+                        "AWS_ACCESS_KEY_ID=${assumeRole.Credentials.AccessKeyId}",
+                        "AWS_SECRET_ACCESS_KEY=${assumeRole.Credentials.SecretAccessKey}",
+                        "AWS_SESSION_TOKEN=${assumeRole.Credentials.SessionToken}"
+                    ]) {
+                        sh "aws s3 ls"
+                    }
                 }
             }
         }
