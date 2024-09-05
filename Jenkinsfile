@@ -36,6 +36,7 @@ pipeline {
             }
             steps {
                 script {
+                    sh 'whoami'
                     sh "${COMMAND} ${TEST_COMMAND}"
                 }
             }
