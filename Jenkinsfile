@@ -36,7 +36,7 @@ pipeline {
             }
             steps {
                 script {
-                    whoami
+                    'whoami'
                     sh "${COMMAND} ${TEST_COMMAND}"
                 }
             }
