@@ -15,7 +15,7 @@ pipeline {
         M2_CONTAINER_PATH = "/root/.m2/repository"
         BUILD_COMMAND = "./gradlew clean build"
         TEST_COMMAND = "./gradlew test"
-        COMMAND = 'sudo docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -w /app ${BUILDER_DOCKER_IMAGE}'
+        COMMAND = 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -w /app ${BUILDER_DOCKER_IMAGE}'
     }
 
     stages {
@@ -36,6 +36,7 @@ pipeline {
             }
             steps {
                 script {
+                    sh 'whoami'
                     sh "${COMMAND} ${TEST_COMMAND}"
                 }
             }
