@@ -9,7 +9,7 @@ pipeline {
     environment {
         BUILDER_DOCKER_IMAGE = 'amazoncorretto:17.0.10'
         PROJECT_NAME = '8ball'
-        JAR_PATH = "build/libs/${PROJECT_NAME}.jar"
+        JAR_PATH = "${M2_LOCAL_PATH}/repository/org/example/8ball/"
         ARTIFACTORY_REPO = "${PROJECT_NAME}"
         M2_LOCAL_PATH = "/home/jenkins/.m2"
         M2_CONTAINER_PATH = "/root/.m2/repository"
@@ -42,15 +42,15 @@ pipeline {
 //             }
 //         }
 
-//         stage('Push to the JFrog artifactory') {
-//             when {
-//                 buildingTag()
-//             }
-//             steps {
-//                 script {
-//                     jf "rt u ${JAR_PATH} ${ARTIFACTORY_REPO}/${env.BRANCH_NAME.replace('refs/tags/', '')}/"
-//                 }
-//             }
-//         }
+        stage('Push to the JFrog artifactory') {
+            when {
+                buildingTag()
+            }
+            steps {
+                script {
+                    jf "rt u ${JAR_PATH} ${ARTIFACTORY_REPO}}/"
+                }
+            }
+        }
     }
 }
