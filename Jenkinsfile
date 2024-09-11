@@ -13,7 +13,7 @@ pipeline {
         ARTIFACTORY_REPO = "${PROJECT_NAME}"
         M2_LOCAL_PATH = "/home/jenkins/.m2"
         M2_CONTAINER_PATH = "/root/.m2/repository"
-        BUILD_COMMAND = "./gradlew clean build"
+        PUBLISH_TO_MAVEN_LOCAL = "./gradlew publishToMavenLocal"
         TEST_COMMAND = "./gradlew test"
         COMMAND = 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -w /app ${BUILDER_DOCKER_IMAGE}'
     }
@@ -25,7 +25,8 @@ pipeline {
             }
             steps {
                 script {
-                    sh "${COMMAND} ${BUILD_COMMAND}"
+                    sh "${COMMAND} ${PUBLISH_TO_MAVEN_LOCAL}"
+                    sh "ls -al ${M2_LOCAL_PATH}"
                 }
             }
         }
@@ -36,7 +37,6 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'whoami'
                     sh "${COMMAND} ${TEST_COMMAND}"
                 }
             }
