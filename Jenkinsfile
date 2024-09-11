@@ -48,7 +48,7 @@ pipeline {
             }
             steps {
                 script {
-                    jf "rt u ${JAR_PATH} ${ARTIFACTORY_REPO}}/"
+                    jf "rt u ${JAR_PATH} ${ARTIFACTORY_REPO}/"
                 }
             }
         }
