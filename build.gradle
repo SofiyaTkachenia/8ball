@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'org.example'
@@ -18,4 +19,15 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'org.example'
+            artifactId = '8ball'
+            version = '0.0.1'
+            from components.java
+        }
+    }
 }
