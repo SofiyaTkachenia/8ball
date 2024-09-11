@@ -43,9 +43,6 @@ pipeline {
 //         }
 
         stage('Push to the JFrog artifactory') {
-            when {
-                buildingTag()
-            }
             steps {
                 script {
                     jf "rt u ${JAR_PATH} ${ARTIFACTORY_REPO}/"
