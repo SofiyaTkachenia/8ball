@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     sh "${COMMAND} ${PUBLISH_TO_MAVEN_LOCAL}"
-                    sh "ls -al ${M2_LOCAL_PATH}"
+                    sh "ls -al ${M2_LOCAL_PATH}/org"
                     sh "cat ${M2_LOCAL_PATH}/repository/org/example/8ball/0.0.1/8ball-0.0.1.pom"
                 }
             }
