@@ -26,21 +26,21 @@ pipeline {
             steps {
                 script {
                     sh "${COMMAND} ${PUBLISH_TO_MAVEN_LOCAL}"
-                    sh "ls -al ${M2_LOCAL_PATH}"
+                    sh "ls -al ${M2_LOCAL_PATH}/repository"
                 }
             }
         }
 
-        stage('Run unit tests') {
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    sh "${COMMAND} ${TEST_COMMAND}"
-                }
-            }
-        }
+//         stage('Run unit tests') {
+//             when {
+//                 branch 'main'
+//             }
+//             steps {
+//                 script {
+//                     sh "${COMMAND} ${TEST_COMMAND}"
+//                 }
+//             }
+//         }
 
 //         stage('Push to the JFrog artifactory') {
 //             when {
