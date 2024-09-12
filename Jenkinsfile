@@ -4,12 +4,9 @@ pipeline {
 
     environment {
         BUILDER_DOCKER_IMAGE = 'amazoncorretto:17.0.10'
-        PROJECT_NAME = '8ball'
-        JAR_PATH = "${M2_LOCAL_PATH}/org/example/8ball/"
-        ARTIFACTORY_REPO = "${PROJECT_NAME}"
         M2_LOCAL_PATH = "/home/jenkins/.m2/repository"
         M2_CONTAINER_PATH = "/root/.m2/repository"
-        PUBLISH_TO_MAVEN_LOCAL = "./gradlew publish"
+        PUBLISH_COMMAND = "./gradlew publish"
         TEST_COMMAND = "./gradlew test"
     }
 
@@ -17,7 +14,7 @@ pipeline {
 
         stage('Get CodePipeline auth token') {
             when {
-                branch 'main'
+                buildingTag()
             }
             steps {
                 script {
@@ -32,24 +29,24 @@ pipeline {
 
         stage('Dockerized build') {
             when {
-                branch 'main'
+                buildingTag()
             }
             steps {
                 script {
-                    sh 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} -w /app ${BUILDER_DOCKER_IMAGE} ${PUBLISH_TO_MAVEN_LOCAL}'
+                    sh 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} -w /app ${BUILDER_DOCKER_IMAGE} ${PUBLISH_COMMAND}'
                 }
             }
         }
 
-//         stage('Run unit tests') {
-//             when {
-//                 branch 'main'
-//             }
-//             steps {
-//                 script {
-//                     sh "${COMMAND} ${TEST_COMMAND}"
-//                 }
-//             }
-//         }
+        stage('Run unit tests') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    sh 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} -w /app ${BUILDER_DOCKER_IMAGE} ${TEST_COMMAND}'
+                }
+            }
+        }
     }
 }
