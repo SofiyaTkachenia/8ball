@@ -1,4 +1,5 @@
 pipeline {
+
     agent { label 'worker' }
 
     environment {
@@ -23,8 +24,8 @@ pipeline {
                     sh "ls -al /home/jenkins/.m2/repository"
                     env.CODEARTIFACT_AUTH_TOKEN = sh(
                         script: "aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken --output text",
-                        returnStdout: true
-                    ).trim()
+                        returnStdout: false
+                    )
                 }
             }
         }
@@ -35,8 +36,8 @@ pipeline {
             }
             steps {
                 script {
-                    def command = "docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -w /app -e CODEARTIFACT_AUTH_TOKEN=${env.CODEARTIFACT_AUTH_TOKEN} ${BUILDER_DOCKER_IMAGE}"
-                    sh "${command} ${PUBLISH_TO_MAVEN_LOCAL}"
+                    sh "echo $CODEARTIFACT_AUTH_TOKEN"
+                    sh "docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -w /app -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} ${BUILDER_DOCKER_IMAGE}"
                 }
             }
         }
@@ -47,8 +48,7 @@ pipeline {
             }
             steps {
                 script {
-                    def command = "docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -w /app -e CODEARTIFACT_AUTH_TOKEN=${env.CODEARTIFACT_AUTH_TOKEN} ${BUILDER_DOCKER_IMAGE}"
-                    sh "${command} ${TEST_COMMAND}"
+                    sh "${COMMAND} ${TEST_COMMAND}"
                 }
             }
         }
