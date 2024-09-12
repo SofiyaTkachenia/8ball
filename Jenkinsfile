@@ -13,9 +13,6 @@ pipeline {
     stages {
 
         stage('Get CodePipeline auth token') {
-            when {
-                buildingTag()
-            }
             steps {
                 script {
                     sh "ls -al /home/jenkins/.m2/repository"
