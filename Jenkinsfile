@@ -36,7 +36,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew publish'
+                    sh 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} -w /app ${BUILDER_DOCKER_IMAGE} ${PUBLISH_TO_MAVEN_LOCAL}'
                 }
             }
         }
