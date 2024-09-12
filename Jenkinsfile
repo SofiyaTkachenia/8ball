@@ -24,8 +24,8 @@ pipeline {
                     sh "ls -al /home/jenkins/.m2/repository"
                     env.CODEARTIFACT_AUTH_TOKEN = sh(
                         script: "aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken --output text",
-                        returnStdout: false
-                    )
+                        returnStdout: true
+                    ).trim()
                 }
             }
         }
