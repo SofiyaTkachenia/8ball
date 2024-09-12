@@ -18,7 +18,7 @@ pipeline {
                 script {
                     sh "ls -al /home/jenkins/.m2/repository"
                     env.CODEARTIFACT_AUTH_TOKEN = sh(
-                        script: ${GET_TOKEN_COMMAND},
+                        script: "${GET_TOKEN_COMMAND}",
                         returnStdout: true
                     ).trim()
                 }
