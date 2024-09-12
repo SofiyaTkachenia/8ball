@@ -37,7 +37,15 @@ pipeline {
             steps {
                 script {
                     sh "echo $CODEARTIFACT_AUTH_TOKEN"
-                    sh "docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -w /app -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} ./gradlew publish"
+                    sh """
+                        docker run --rm --name builder \
+                        -v "$PWD":/app \
+                        -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} \
+                        -w /app \
+                        -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} \
+                        ${BUILDER_DOCKER_IMAGE} \
+                        ./gradlew publish
+                    """
                 }
             }
         }
