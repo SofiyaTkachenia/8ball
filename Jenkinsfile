@@ -27,6 +27,7 @@ pipeline {
                         script: "aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken --output text",
                         returnStdout: true
                     ).trim()
+                    sh "echo 'CodeArtifact Auth Token: ${env.CODEARTIFACT_AUTH_TOKEN}'"
                 }
             }
         }
