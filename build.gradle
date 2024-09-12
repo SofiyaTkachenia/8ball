@@ -37,6 +37,7 @@ publishing {
                 username "aws"
                 def authToken = System.env.CODEARTIFACT_AUTH_TOKEN
                 println "CODEARTIFACT_AUTH_TOKEN: ${authToken}"
+                password authToken
             }
         }
     }
