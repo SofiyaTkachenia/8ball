@@ -2,10 +2,6 @@ pipeline {
 
     agent { label 'worker' }
 
-    tools {
-        jfrog 'jfrog-cli-latest'
-    }
-
     environment {
         BUILDER_DOCKER_IMAGE = 'amazoncorretto:17.0.10'
         PROJECT_NAME = '8ball'
@@ -13,12 +9,28 @@ pipeline {
         ARTIFACTORY_REPO = "${PROJECT_NAME}"
         M2_LOCAL_PATH = "/home/jenkins/.m2"
         M2_CONTAINER_PATH = "/root/.m2/repository"
-        PUBLISH_TO_MAVEN_LOCAL = "./gradlew publishToMavenLocal"
+        PUBLISH_TO_MAVEN_LOCAL = "./gradlew publish"
         TEST_COMMAND = "./gradlew test"
         COMMAND = 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -w /app ${BUILDER_DOCKER_IMAGE}'
     }
 
     stages {
+
+        stage('Get CodePipeline auth token') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    env.CODEARTIFACT_AUTH_TOKEN = sh(
+                        script: "aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken --output text",
+                        returnStdout: true
+                    ).trim()
+                    sh "echo 'CodeArtifact Auth Token: ${env.CODEARTIFACT_AUTH_TOKEN}'"
+                }
+            }
+        }
+
         stage('Dockerized build') {
             when {
                 branch 'main'
@@ -26,26 +38,17 @@ pipeline {
             steps {
                 script {
                     sh "${COMMAND} ${PUBLISH_TO_MAVEN_LOCAL}"
-                    sh "cat ${M2_LOCAL_PATH}/org/example/8ball/0.0.1/8ball-0.0.1.pom"
                 }
             }
         }
 
-//         stage('Run unit tests') {
-//             when {
-//                 branch 'main'
-//             }
-//             steps {
-//                 script {
-//                     sh "${COMMAND} ${TEST_COMMAND}"
-//                 }
-//             }
-//         }
-
-        stage('Push to the JFrog artifactory') {
+        stage('Run unit tests') {
+            when {
+                branch 'main'
+            }
             steps {
                 script {
-                    jf "rt u ${JAR_PATH} ${ARTIFACTORY_REPO}/"
+                    sh "${COMMAND} ${TEST_COMMAND}"
                 }
             }
         }
