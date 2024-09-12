@@ -23,7 +23,10 @@ pipeline {
             steps {
                 script {
                     sh "ls -al /home/jenkins/.m2/repository"
-                    sh "export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken --output text`"
+                    env.CODEARTIFACT_AUTH_TOKEN = sh(
+                        script: "aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken --output text",
+                        returnStdout: true
+                    )
                     sh "echo 'CodeArtifact Auth Token: ${env.CODEARTIFACT_AUTH_TOKEN}'"
                 }
             }
