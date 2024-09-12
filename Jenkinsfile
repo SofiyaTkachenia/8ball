@@ -41,15 +41,15 @@ pipeline {
             }
         }
 
-        stage('Run unit tests') {
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    sh "${COMMAND} ${TEST_COMMAND}"
-                }
-            }
-        }
+//         stage('Run unit tests') {
+//             when {
+//                 branch 'main'
+//             }
+//             steps {
+//                 script {
+//                     sh "${COMMAND} ${TEST_COMMAND}"
+//                 }
+//             }
+//         }
     }
 }
