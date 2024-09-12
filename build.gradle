@@ -34,7 +34,7 @@ publishing {
         maven {
             url 'https://test-jenkins-175222917203.d.codeartifact.eu-central-1.amazonaws.com/maven/lib-repository/'
             credentials {
-                username "sofitkachenia"
+                username "aws"
                 password System.env.CODEARTIFACT_AUTH_TOKEN
             }
         }
