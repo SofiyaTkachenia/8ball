@@ -35,7 +35,8 @@ publishing {
             url 'https://test-jenkins-175222917203.d.codeartifact.eu-central-1.amazonaws.com/maven/lib-repository/'
             credentials {
                 username "aws"
-                password System.env.CODEARTIFACT_AUTH_TOKEN
+                def authToken = System.env.CODEARTIFACT_AUTH_TOKEN
+                println "CODEARTIFACT_AUTH_TOKEN: ${authToken}"
             }
         }
     }
