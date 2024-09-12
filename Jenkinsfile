@@ -11,6 +11,7 @@ pipeline {
         M2_CONTAINER_PATH = "/root/.m2/repository"
         PUBLISH_TO_MAVEN_LOCAL = "./gradlew publish"
         TEST_COMMAND = "./gradlew test"
+        COMMAND = "docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} -w /app ${BUILDER_DOCKER_IMAGE}"
     }
 
     stages {
@@ -21,11 +22,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "ls -al /home/jenkins/.m2/repository"
-                    env.CODEARTIFACT_AUTH_TOKEN = sh(
-                        script: "aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken --output text",
-                        returnStdout: true
-                    ).trim()
+                    sh "${COMMAND} ${PUBLISH_TO_MAVEN_LOCAL}"
                 }
             }
         }
@@ -36,7 +33,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} -w /app ${BUILDER_DOCKER_IMAGE} ./gradlew publish'
+                    sh 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -w /app ${BUILDER_DOCKER_IMAGE} -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} ./gradlew publish'
                 }
             }
         }
