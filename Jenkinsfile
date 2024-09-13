@@ -47,5 +47,11 @@ pipeline {
 }
 
 def runInDocker(command, token) {
-    sh 'docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -e CODEARTIFACT_AUTH_TOKEN=${token} -w /app ${BUILDER_DOCKER_IMAGE} ${command}'
+    sh """
+        docker run --rm --name builder \
+        -v /home/jenkins/workspace/lib-pipeline_main:/app \
+        -v /home/jenkins/.m2/repository:/root/.m2/repository \
+        -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} \
+        -w /app amazoncorretto:17.0.10 ./gradlew publish
+    """
 }
