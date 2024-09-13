@@ -18,7 +18,8 @@ pipeline {
                 script {
                     env.CODEARTIFACT_AUTH_TOKEN = sh(
                         script: "${GET_TOKEN_COMMAND}",
-                        returnStdout: true
+                        returnStdout: true,
+                        returnStatus: true
                     ).trim()
                 }
             }
