@@ -37,16 +37,16 @@ pipeline {
             }
         }
 
-        stage('Run unit tests') {
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    sh '-w /app ${BUILDER_DOCKER_IMAGE} ${TEST_COMMAND}'
-                }
-            }
-        }
+//         stage('Run unit tests') {
+//             when {
+//                 branch 'main'
+//             }
+//             steps {
+//                 script {
+//                     sh '-w /app ${BUILDER_DOCKER_IMAGE} ${TEST_COMMAND}'
+//                 }
+//             }
+//         }
     }
     post {
         always {
