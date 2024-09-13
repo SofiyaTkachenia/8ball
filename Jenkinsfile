@@ -25,14 +25,14 @@ pipeline {
         }
 
         stage('Dockerized build') {
-            when { buildingTag() }
+            when { branch 'main' }
             steps {
                 runInDocker("${PUBLISH_COMMAND}")
             }
         }
 
         stage('Run unit tests') {
-            when { branch 'main' }
+            when { buildingTag() }
             steps {
                 runInDocker("${TEST_COMMAND}")
             }
