@@ -16,12 +16,10 @@ pipeline {
         stage('Get CodePipeline auth token') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'CODEARTIFACT_AUTH_TOKEN', variable: 'CODEARTIFACT_AUTH_TOKEN')]) {
-                        env.CODEARTIFACT_AUTH_TOKEN = sh(
-                            script: "${GET_TOKEN_COMMAND}",
-                            returnStdout: true
-                        ).trim()
-                    }
+                    env.CODEARTIFACT_AUTH_TOKEN = sh(
+                        script: "${GET_TOKEN_COMMAND}",
+                        returnStdout: true
+                    ).trim()
                 }
             }
         }
