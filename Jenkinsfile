@@ -16,21 +16,12 @@ pipeline {
         stage('Get CodePipeline auth token') {
             steps {
                 script {
-                    env.CODEARTIFACT_AUTH_TOKEN = sh(
-                        script: "${GET_TOKEN_COMMAND}",
-                        returnStdout: true
-                    ).trim()
-                }
-            }
-        }
-
-        stage('Dockerized build') {
-            when {
-                buildingTag()
-            }
-            steps {
-                script {
-                    sh "${getRunDockerCommand(env.CODEARTIFACT_AUTH_TOKEN)} ${PUBLISH_COMMAND}"
+                    withCredentials([string(credentialsId: 'CODEARTIFACT_AUTH_TOKEN', variable: 'CODEARTIFACT_AUTH_TOKEN')]) {
+                        env.CODEARTIFACT_AUTH_TOKEN = sh(
+                            script: "${GET_TOKEN_COMMAND}",
+                            returnStdout: true
+                        ).trim()
+                    }
                 }
             }
         }
@@ -42,6 +33,17 @@ pipeline {
             steps {
                 script {
                     sh "${getRunDockerCommand(env.CODEARTIFACT_AUTH_TOKEN)} ${TEST_COMMAND}"
+                }
+            }
+        }
+
+        stage('Dockerized build') {
+            when {
+                buildingTag()
+            }
+            steps {
+                script {
+                    sh "${getRunDockerCommand(env.CODEARTIFACT_AUTH_TOKEN)} ${PUBLISH_COMMAND}"
                 }
             }
         }
