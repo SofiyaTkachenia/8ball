@@ -36,9 +36,9 @@ pipeline {
         }
 
         stage('Dockerized build') {
-//             when {
-//                 buildingTag()
-//             }
+            when {
+                buildingTag()
+            }
             steps {
                 script {
                     sh "${getRunDockerCommand(null)} ${PUBLISH_COMMAND}"
