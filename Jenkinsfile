@@ -27,14 +27,14 @@ pipeline {
         stage('Dockerized build') {
             when { branch 'main' }
             steps {
-                runInDocker("${PUBLISH_COMMAND}")
+                runInDocker("${PUBLISH_COMMAND}", env.CODEARTIFACT_AUTH_TOKEN)
             }
         }
 
         stage('Run unit tests') {
             when { branch 'main' }
             steps {
-                runInDocker("${TEST_COMMAND}")
+                runInDocker("${TEST_COMMAND}", env.CODEARTIFACT_AUTH_TOKEN)
             }
         }
     }
@@ -46,12 +46,12 @@ pipeline {
     }
 }
 
-def runInDocker(command) {
+def runInDocker(command, token) {
     sh """
         docker run --rm --name builder \
         -v \"$PWD\":/app \
         -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} \
-        -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN} \
+        -e CODEARTIFACT_AUTH_TOKEN=${token} \
         -w /app ${BUILDER_DOCKER_IMAGE} ${command}
     """
 }
