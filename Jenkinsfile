@@ -9,6 +9,7 @@ pipeline {
         GET_TOKEN_COMMAND = "aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken --output text"
         PUBLISH_COMMAND = "./gradlew publish"
         TEST_COMMAND = "./gradlew test"
+        TOKEN_FILE = "/tmp/codeartifact_token"
     }
 
     stages {
@@ -16,10 +17,7 @@ pipeline {
         stage('Get CodePipeline auth token') {
             steps {
                 script {
-                    env.CODEARTIFACT_AUTH_TOKEN = sh(
-                        script: "${GET_TOKEN_COMMAND}",
-                        returnStdout: true
-                    ).trim()
+                    sh(script: "${GET_TOKEN_COMMAND} > ${TOKEN_FILE}", returnStatus: true)
                 }
             }
         }
@@ -30,21 +28,21 @@ pipeline {
             }
             steps {
                 script {
-                    sh "${getRunDockerCommand(env.CODEARTIFACT_AUTH_TOKEN)} ${TEST_COMMAND}"
+                    sh "${getRunDockerCommandFromFile(TOKEN_FILE)} ${TEST_COMMAND}"
                 }
             }
         }
 
-        stage('Dockerized build') {
-            when {
-                buildingTag()
-            }
-            steps {
-                script {
-                    sh "${getRunDockerCommand(null)} ${PUBLISH_COMMAND}"
-                }
-            }
-        }
+//         stage('Dockerized build') {
+//             when {
+//                 buildingTag()
+//             }
+//             steps {
+//                 script {
+//                     sh "${getRunDockerCommand(null)} ${PUBLISH_COMMAND}"
+//                 }
+//             }
+//         }
     }
 
     post {
