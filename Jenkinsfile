@@ -9,7 +9,6 @@ pipeline {
         GET_TOKEN_COMMAND = "aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken --output text"
         PUBLISH_COMMAND = "./gradlew publish"
         TEST_COMMAND = "./gradlew test"
-        DOCKER_RUN_COMMAND = "docker run --rm --name builder -v \"$PWD\":/app -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} -e CODEARTIFACT_AUTH_TOKEN=${CODEARTIFACT_AUTH_TOKEN}";
     }
 
     stages {
@@ -47,6 +46,7 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             cleanWs()
