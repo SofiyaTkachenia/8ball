@@ -31,22 +31,21 @@ pipeline {
             }
             steps {
                 script {
-                    def command = getRunDockerCommand(env.CODEARTIFACT_AUTH_TOKEN)
-                    sh "${command} ${PUBLISH_COMMAND}"
+                    sh "${getRunDockerCommand(env.CODEARTIFACT_AUTH_TOKEN)} ${PUBLISH_COMMAND}"
                 }
             }
         }
 
-//         stage('Run unit tests') {
-//             when {
-//                 branch 'main'
-//             }
-//             steps {
-//                 script {
-//                     sh '-w /app ${BUILDER_DOCKER_IMAGE} ${TEST_COMMAND}'
-//                 }
-//             }
-//         }
+        stage('Run unit tests') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    sh "${getRunDockerCommand(env.CODEARTIFACT_AUTH_TOKEN)} ${TEST_COMMAND}"
+                }
+            }
+        }
     }
     post {
         always {
