@@ -57,7 +57,7 @@ pipeline {
 def getRunDockerCommand(token) {
     def tokenEnv = token ? "-e CODEARTIFACT_AUTH_TOKEN=${token}" : ""
     return """
-        docker run --rm --name builder \
+        docker run -q --rm --name builder \
         -v "$PWD":/app \
         -v ${M2_LOCAL_PATH}:${M2_CONTAINER_PATH} \
         ${tokenEnv} \
