@@ -30,7 +30,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "${getRunDockerCommand(env.CODEARTIFACT_AUTH_TOKEN)} ${TEST_COMMAND}"
+                    sh "${getRunDockerCommand(null)} ${TEST_COMMAND}"
                 }
             }
         }
