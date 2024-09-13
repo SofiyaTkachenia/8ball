@@ -6,7 +6,7 @@ pipeline {
         BUILDER_DOCKER_IMAGE = 'amazoncorretto:17.0.10'
         M2_LOCAL_PATH = "/home/jenkins/.m2/repository"
         M2_CONTAINER_PATH = "/root/.m2/repository"
-        GET_TOKEN_COMMAND = "aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken --output text"
+        GET_TOKEN_COMMAND = "aws codeartifact get-authorization-token --domain test-jenkins --domain-owner 175222917203 --region eu-central-1 --query authorizationToken"
         PUBLISH_COMMAND = "./gradlew publish"
         TEST_COMMAND = "./gradlew test"
 
