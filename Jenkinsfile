@@ -22,16 +22,16 @@ pipeline {
             }
         }
 
-//         stage('Run unit tests') {
-//             when {
-//                 branch 'main'
-//             }
-//             steps {
-//                 script {
-//                     sh "${getRunDockerCommandFromFile(TOKEN_FILE)} ${TEST_COMMAND}"
-//                 }
-//             }
-//         }
+        stage('Run unit tests') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    sh "${getRunDockerCommandFromFile(TOKEN_FILE)} ${TEST_COMMAND}"
+                }
+            }
+        }
 
         stage('Dockerized build') {
             when {
@@ -39,7 +39,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "${getRunDockerCommand(TOKEN_FILE)} ${PUBLISH_COMMAND}"
+                    sh "${getRunDockerCommandFromFile(TOKEN_FILE)} ${PUBLISH_COMMAND}"
                 }
             }
         }
