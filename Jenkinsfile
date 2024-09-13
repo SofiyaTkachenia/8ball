@@ -41,7 +41,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "${getRunDockerCommand(env.CODEARTIFACT_AUTH_TOKEN)} ${PUBLISH_COMMAND}"
+                    sh "${getRunDockerCommand(null)} ${PUBLISH_COMMAND}"
                 }
             }
         }
@@ -63,4 +63,3 @@ def getRunDockerCommand(token) {
         -w /app ${BUILDER_DOCKER_IMAGE}
     """
 }
-
