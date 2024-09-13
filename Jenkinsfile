@@ -22,27 +22,27 @@ pipeline {
             }
         }
 
-        stage('Run unit tests') {
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    sh "${getRunDockerCommandFromFile(TOKEN_FILE)} ${TEST_COMMAND}"
-                }
-            }
-        }
-
-//         stage('Dockerized build') {
+//         stage('Run unit tests') {
 //             when {
-//                 buildingTag()
+//                 branch 'main'
 //             }
 //             steps {
 //                 script {
-//                     sh "${getRunDockerCommand(null)} ${PUBLISH_COMMAND}"
+//                     sh "${getRunDockerCommandFromFile(TOKEN_FILE)} ${TEST_COMMAND}"
 //                 }
 //             }
 //         }
+
+        stage('Dockerized build') {
+            when {
+                buildingTag()
+            }
+            steps {
+                script {
+                    sh "${getRunDockerCommand(TOKEN_FILE)} ${PUBLISH_COMMAND}"
+                }
+            }
+        }
     }
 
     post {
@@ -53,7 +53,7 @@ pipeline {
 }
 
 def getRunDockerCommand(token) {
-    def tokenEnv = token ? "-e CODEARTIFACT_AUTH_TOKEN=${token}" : ""
+    def tokenEnv = token ? " -e CODEARTIFACT_AUTH_TOKEN=$(cat ${tokenFile}) " : ""
     return """
         docker run --rm --name builder \
         -v "$PWD":/app \
