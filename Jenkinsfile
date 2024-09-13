@@ -52,8 +52,9 @@ pipeline {
     }
 }
 
-def getRunDockerCommand(token) {
-    def tokenEnv = token ? " -e CODEARTIFACT_AUTH_TOKEN=$(cat ${tokenFile}) " : ""
+def getRunDockerCommandFromFile(tokenFile) {
+    def token = readFile(tokenFile).trim()
+    def tokenEnv = token ? "-e CODEARTIFACT_AUTH_TOKEN=${token}" : ""
     return """
         docker run --rm --name builder \
         -v "$PWD":/app \
