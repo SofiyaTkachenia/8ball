@@ -27,7 +27,7 @@ pipeline {
 
         stage('Dockerized build') {
             when {
-                buildingTag()
+                branch 'main'
             }
             steps {
                 script {
